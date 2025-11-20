@@ -1,0 +1,12 @@
+flask:
+  env: development
+  debug: true
+
+database:
+  user: root
+  pass: '051404'
+  host: localhost
+  port: 3307
+  name: solar_station
+
+secret_key: change_me
