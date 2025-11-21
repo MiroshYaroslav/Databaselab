@@ -5,11 +5,9 @@ from flask import Flask, request, jsonify
 from sqlalchemy import text
 from app.common.db import db, ma
 from app.routes import register_routes
-from flasgger import Swagger
 
 
 def load_config():
-    """Завантаження конфігурації з файлу app.yml"""
     path = os.path.join(os.path.dirname(__file__), "config", "app.yml")
     print("Looking for config at:", path)
     with open(path, "r", encoding="utf-8") as f:
@@ -19,11 +17,9 @@ def load_config():
 
 
 def create_app():
-    """Створення Flask додатку з усіма налаштуваннями"""
     config = load_config()
     app = Flask(__name__)
 
-    # ---- DATABASE CONFIG ----
     db_conf = config.get("database")
     if not db_conf:
         raise ValueError("Database config is missing in app.yml")
@@ -35,18 +31,12 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = config.get("secret_key", "change_me")
 
-    # ---- INIT EXTENSIONS ----
     db.init_app(app)
     ma.init_app(app)
 
-    # ---- SWAGGER ----
-    Swagger(app)
-
     with app.app_context():
-        # Імпорт моделей (важливо для SQLAlchemy)
-        from app.user.domain import models  # noqa: F401
+        from app.user.domain import models
 
-        # Тест підключення до MySQL
         try:
             with db.engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
@@ -54,24 +44,13 @@ def create_app():
         except Exception as e:
             print("Помилка підключення:", e)
 
-    # ---- REGISTER ROUTES ----
     register_routes(app)
 
-    # ---- HOME ROUTE ----
     @app.route("/")
     def home():
-        """
-        Home endpoint
-        ---
-        get:
-          description: Перевірка роботи сервера
-          responses:
-            200:
-              description: Сервер працює
-        """
+        """Перевірка роботи сервера"""
         return "Сервер Flask працює"
 
-    # ---- LOG REQUESTS ----
     @app.before_request
     def log_request():
         print(f"\n[REQUEST] {request.method} {request.url}")
@@ -81,14 +60,12 @@ def create_app():
             except Exception as e:
                 print("Cannot parse JSON:", e)
 
-    # ---- GLOBAL ERROR HANDLER ----
     @app.errorhandler(Exception)
     def handle_exception(e):
         print("\n[ERROR]")
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-    # ---- FAVICON ----
     @app.route("/favicon.ico")
     def favicon():
         return "", 204
@@ -96,9 +73,7 @@ def create_app():
     return app
 
 
-# Створюємо додаток
 app = create_app()
 
 if __name__ == "__main__":
-    # Використовуємо debug=True, щоб бачити повні traceback
     app.run(host="0.0.0.0", port=5000, debug=True)
