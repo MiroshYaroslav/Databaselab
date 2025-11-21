@@ -35,8 +35,6 @@ def create_app():
     ma.init_app(app)
 
     with app.app_context():
-        from app.user.domain import models
-
         try:
             with db.engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
