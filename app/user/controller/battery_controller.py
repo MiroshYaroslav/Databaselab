@@ -3,7 +3,6 @@ from app.user.service.battery_service import BatteryService
 
 battery_bp = Blueprint("battery_bp", __name__, url_prefix="/api/batteries")
 
-# --- CRUD ---
 @battery_bp.route("", methods=["GET"])
 def list_batteries():
     return jsonify(BatteryService.list_batteries())
@@ -35,7 +34,6 @@ def delete_battery(battery_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 relationship ---
 @battery_bp.route("/<int:battery_id>/station", methods=["GET"])
 def get_station_of_battery(battery_id):
     station = BatteryService.get_station_of_battery(battery_id)
@@ -43,7 +41,6 @@ def get_station_of_battery(battery_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify(station)
 
-# --- M:M relationship ---
 @battery_bp.route("/<int:battery_id>/charges", methods=["GET"])
 def get_charges_of_battery(battery_id):
     charges = BatteryService.get_charges_of_battery(battery_id)

@@ -3,7 +3,6 @@ from app.user.service.energy_sale_service import EnergySaleService
 
 energy_sale_bp = Blueprint("energy_sale_bp", __name__, url_prefix="/api/energy-sales")
 
-# --- CRUD ---
 @energy_sale_bp.route("", methods=["GET"])
 def list_sales():
     return jsonify(EnergySaleService.list_sales())
@@ -35,7 +34,6 @@ def delete_sale(sale_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 ---
 @energy_sale_bp.route("/<int:sale_id>/station", methods=["GET"])
 def get_station_of_sale(sale_id):
     station = EnergySaleService.get_station_of_sale(sale_id)

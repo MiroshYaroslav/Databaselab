@@ -62,3 +62,4 @@ API підтримує стандартні методи: `GET`, `POST`, `PUT`, 
 
 ```http
 GET /api/users/3/stations
+

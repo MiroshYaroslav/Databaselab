@@ -3,7 +3,6 @@ from app.user.service.station_service import StationService
 
 station_bp = Blueprint("station_bp", __name__, url_prefix="/api/stations")
 
-# --- CRUD ---
 @station_bp.route("", methods=["GET"])
 def list_stations():
     return jsonify(StationService.list_stations())
@@ -35,7 +34,6 @@ def delete_station(station_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 relationship ---
 @station_bp.route("/<int:station_id>/address", methods=["GET"])
 def get_address_of_station(station_id):
     address = StationService.get_address_of_station(station_id)
@@ -43,7 +41,6 @@ def get_address_of_station(station_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify(address)
 
-# --- M:M relationship ---
 @station_bp.route("/<int:station_id>/users", methods=["GET"])
 def get_users_of_station(station_id):
     users = StationService.get_users_of_station(station_id)

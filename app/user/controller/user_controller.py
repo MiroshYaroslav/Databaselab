@@ -5,7 +5,6 @@ from app.user.service.user_service import UserService
 
 user_bp = Blueprint("user_bp", __name__, url_prefix="/api/users")
 
-# --- CRUD ---
 @user_bp.route("", methods=["GET"])
 def list_users():
     try:
@@ -44,7 +43,6 @@ def delete_user(user_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:M relationship ---
 @user_bp.route("/<int:user_id>/stations", methods=["GET"])
 def get_stations_by_user(user_id):
     stations = UserService.get_stations_by_user(user_id)

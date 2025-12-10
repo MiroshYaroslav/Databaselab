@@ -3,7 +3,6 @@ from app.user.service.panel_service import PanelService
 
 panel_bp = Blueprint("panel_bp", __name__, url_prefix="/api/panels")
 
-# --- CRUD ---
 @panel_bp.route("", methods=["GET"])
 def list_panels():
     return jsonify(PanelService.list_panels())
@@ -35,7 +34,6 @@ def delete_panel(panel_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 relationships ---
 @panel_bp.route("/<int:panel_id>/station", methods=["GET"])
 def get_station_of_panel(panel_id):
     station = PanelService.get_station_of_panel(panel_id)

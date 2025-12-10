@@ -3,7 +3,6 @@ from app.user.service.address_service import AddressService
 
 address_bp = Blueprint("address_bp", __name__, url_prefix="/api/addresses")
 
-# --- CRUD ---
 @address_bp.route("", methods=["GET"])
 def list_addresses():
     return jsonify(AddressService.list_addresses())
@@ -35,7 +34,6 @@ def delete_address(address_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 relationship ---
 @address_bp.route("/<int:address_id>/users", methods=["GET"])
 def get_users_by_address(address_id):
     users = AddressService.get_users_by_address(address_id)

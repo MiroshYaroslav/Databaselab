@@ -3,7 +3,6 @@ from app.user.service.panel_generation_service import PanelGenerationService
 
 panel_generation_bp = Blueprint("panel_generation_bp", __name__, url_prefix="/api/panel-generations")
 
-# --- CRUD ---
 @panel_generation_bp.route("", methods=["GET"])
 def list_generations():
     return jsonify(PanelGenerationService.list_generations())
@@ -35,7 +34,6 @@ def delete_generation(generation_id):
         return jsonify({"message": "Not found"}), 404
     return jsonify({"message": "deleted"})
 
-# --- M:1 ---
 @panel_generation_bp.route("/<int:generation_id>/panel", methods=["GET"])
 def get_panel_of_generation(generation_id):
     panel = PanelGenerationService.get_panel_of_generation(generation_id)

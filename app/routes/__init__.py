@@ -8,6 +8,7 @@ from app.user.controller.energy_sale_controller import energy_sale_bp
 from app.user.controller.panel_controller import panel_bp
 from app.user.controller.panel_type_controller import panel_type_bp
 from app.user.controller.address_controller import address_bp
+from app.user.controller.stored_program_controller import sp_bp
 
 
 def register_routes(app):
@@ -23,3 +24,4 @@ def register_routes(app):
     app.register_blueprint(energy_sale_bp)
 
     app.register_blueprint(generic_bp)
+    app.register_blueprint(sp_bp)
