@@ -32,7 +32,6 @@ class StoredProgramService:
 
     @staticmethod
     def add_log_test(data):
-        # data = {"station_id": 123, "description": "text"}
         return StoredProgramDAO.add_maintenance_log(data.get('station_id'), data.get('description'))
 
     @staticmethod
@@ -42,3 +41,7 @@ class StoredProgramService:
     @staticmethod
     def get_audit():
         return StoredProgramDAO.get_audit_logs()
+
+    @staticmethod
+    def get_logs(station_id=None):
+        return StoredProgramDAO.get_all_maintenance_logs(station_id)

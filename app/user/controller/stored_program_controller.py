@@ -62,3 +62,15 @@ def delete_test_station(id):
 def get_audit_log():
     res = StoredProgramService.get_audit()
     return jsonify(res), 200
+
+
+@sp_bp.route('/maintenance-logs', methods=['GET'])
+def get_logs():
+    station_id = request.args.get('station_id')
+
+    logs = StoredProgramService.get_logs(station_id)
+
+    if isinstance(logs, str):
+        return jsonify({"error": logs}), 400
+
+    return jsonify(logs), 200

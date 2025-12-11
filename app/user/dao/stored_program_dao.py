@@ -61,7 +61,6 @@ class StoredProgramDAO:
 
     @staticmethod
     def create_test_station(name):
-        # Створюємо станцію прямим SQL, щоб отримати ID
         sql = text("INSERT INTO station (name, address_id) VALUES (:name, NULL)")
         try:
             db.session.execute(sql, {"name": name})
@@ -100,5 +99,28 @@ class StoredProgramDAO:
         try:
             result = db.session.execute(sql).mappings().all()
             return [dict(row) for row in result]
+        except Exception as e:
+            return str(e)
+
+    @staticmethod
+    def get_all_maintenance_logs(station_id=None):
+        if station_id:
+            sql = text("SELECT * FROM maintenance_logs WHERE station_id = :sid ORDER BY log_date DESC")
+            params = {"sid": station_id}
+        else:
+            sql = text("SELECT * FROM maintenance_logs ORDER BY log_date DESC")
+            params = {}
+
+        try:
+            result = db.session.execute(sql, params).mappings().all()
+
+            logs = []
+            for row in result:
+                row_dict = dict(row)
+                if row_dict.get('log_date'):
+                    row_dict['log_date'] = str(row_dict['log_date'])
+                logs.append(row_dict)
+
+            return logs
         except Exception as e:
             return str(e)
